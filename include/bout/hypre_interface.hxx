@@ -25,7 +25,7 @@ namespace bout {
 #define HypreMalloc(P, SIZE)  cudaMallocManaged(P, SIZE)
 #define HypreFree(P)  cudaFree(P)
 #else
-#define HypreMalloc(P, SIZE)  malloc(P, SIZE)
+#define HypreMalloc(P, SIZE) P = static_cast<decltype(P)>(malloc(SIZE))
 #define HypreFree(P)  free(P)
 #endif
 
@@ -130,8 +130,8 @@ public:
 
     location = f.getLocation();
     initialised = true;
-    HypreMalloc(&I, vsize*sizeof(HYPRE_BigInt)); 
-    HypreMalloc(&V, vsize*sizeof(HYPRE_Complex));
+    HypreMalloc(I, vsize*sizeof(HYPRE_BigInt));
+    HypreMalloc(V, vsize*sizeof(HYPRE_Complex));
     importValuesFromField(f);
   }
 
@@ -157,8 +157,8 @@ public:
     HYPRE_IJVectorInitialize(hypre_vector);
     initialised = true;
     location = CELL_LOC::centre;
-    HypreMalloc(&I, vsize*sizeof(HYPRE_BigInt)); 
-    HypreMalloc(&V, vsize*sizeof(HYPRE_Complex));
+    HypreMalloc(I, vsize*sizeof(HYPRE_BigInt));
+    HypreMalloc(V, vsize*sizeof(HYPRE_Complex));
   }
 
   void assemble() {
@@ -594,15 +594,15 @@ public:
     HYPRE_BigInt *rawI;
     HYPRE_Complex *vals;
 
-    HypreMalloc(&num_cols, num_rows*sizeof(HYPRE_BigInt)); 
+    HypreMalloc(num_cols, num_rows*sizeof(HYPRE_BigInt));
     for (HYPRE_BigInt i = 0; i < num_rows; ++i) {
       num_cols[i] = (*J)[i].size();;
       num_entries += (*J)[i].size();
     }
 
-    HypreMalloc(&rawI, num_rows*sizeof(HYPRE_BigInt));
-    HypreMalloc(&cols, num_entries*sizeof(HYPRE_BigInt)); 
-    HypreMalloc(&vals, num_entries*sizeof(HYPRE_Complex));
+    HypreMalloc(rawI, num_rows*sizeof(HYPRE_BigInt));
+    HypreMalloc(cols, num_entries*sizeof(HYPRE_BigInt));
+    HypreMalloc(vals, num_entries*sizeof(HYPRE_Complex));
     HYPRE_BigInt entry = 0;
     for (HYPRE_BigInt i = 0; i < num_rows; ++i) {
       rawI[i] = (*I)[i];
