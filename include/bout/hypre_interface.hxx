@@ -662,13 +662,14 @@ public:
   //y = alpha*A*x + beta*y
   void computeAxpby(double alpha, HypreVector<T> &x, double beta, HypreVector<T> &y)
   {
-    HYPRE_IJMatrixMatvec(alpha, x.getParallel(), beta, y.getParallel());
+    HYPRE_ParCSRMatrixMatvec(alpha, parallel_matrix, x.getParallel(), beta, y.getParallel());
   }
 
   //y = A*x
-  void computeAx(HypreVector<T> &x, HypreVector<T> &y)
+  void computeAx(HypreVector<T> &x)
   {
-    HYPRE_IJMatrixMatvec(1.0, x.getParallel(), 0.0, y.getParallel());
+    HypreVector<T> y(0.0, index_converter);
+    HYPRE_ParCSRMatrixMatvec(1.0, parallel_matrix, x.getParallel(), 0.0, y.getParallel());
   }
 
 };
