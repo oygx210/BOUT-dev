@@ -658,6 +658,19 @@ public:
 
   HYPRE_ParCSRMatrix getParallel() { return parallel_matrix; }
   const HYPRE_ParCSRMatrix& getParallel() const { return parallel_matrix; }
+
+  //y = alpha*A*x + beta*y
+  void computeAxpby(double alpha, HypreVector<T> &x, double beta, HypreVector<T> &y)
+  {
+    HYPRE_IJMatrixMatvec(alpha, x.getParallel(), beta, y.getParallel());
+  }
+
+  //y = A*x
+  void computeAx(HypreVector<T> &x, HypreVector<T> &y)
+  {
+    HYPRE_IJMatrixMatvec(1.0, x.getParallel(), 0.0, y.getParallel());
+  }
+
 };
 
 // This is a specific Hypre matrix system.  here we will be setting is the system
@@ -688,6 +701,7 @@ public:
     comm = std::is_same<T, FieldPerp>::value ? mesh.getXcomm() : BoutComm::get();
     HYPRE_ParCSRPCGCreate(comm, &solver);
     HYPRE_PCGSetTol(solver, 1e-7);
+    HYPRE_PCGSetAbsoluteTol(solver, 0.0);
     HYPRE_PCGSetMaxIter(solver, 200);
 
     HYPRE_BoomerAMGCreate(&precon);
@@ -699,12 +713,43 @@ public:
     HYPRE_BoomerAMGSetNumSweeps(precon, 1);
     HYPRE_BoomerAMGSetMaxLevels(precon, 20);
     HYPRE_BoomerAMGSetKeepTranspose(precon, 1);
+    HYPRE_BoomerAMGSetTol(precon, 0.0);
+
 
     pcg_setup = false;
   }
 
   ~HypreSystem() {
     HYPRE_Finalize();
+  }
+
+  void setRelTol(double tol)
+  {
+    HYPRE_PCGSetTol(solver, tol);
+  }
+
+  void setAbsTol(double tol)
+  {
+    HYPRE_PCGSetAbsoluteTol(solver, tol);
+  }
+
+  void setMaxIter(int max_iter)
+  {
+    HYPRE_PCGSetMaxIter(solver, max_iter);
+  }
+
+  double getFinalRelResNorm()
+  {
+    HYPRE_Real resnorm;
+    HYPRE_PCGGetFinalRelativeResidualNorm(solver, &resnorm);
+    return resnorm;
+  }
+
+  int getNumItersTaken()
+  {
+    HYPRE_Int iters;
+    HYPRE_PCGGetNumIterations(solver, &iters);
+    return iters;
   }
 
   void setMatrix(HypreMatrix<T>* A_) {
@@ -749,8 +794,9 @@ public:
     return (HYPRE_PtrToParSolverFcn) HYPRE_BoomerAMGSolve; 
   }
 
-  void solve()
+  int solve()
   {
+    int solve_err;
     ASSERT2(A != nullptr);
     ASSERT2(x != nullptr);
     ASSERT2(b != nullptr);
@@ -759,7 +805,8 @@ public:
       pcg_setup = true;
     }
 
-    HYPRE_ParCSRPCGSolve(solver, A->getParallel(), b->getParallel(), x->getParallel());   
+    solve_err = HYPRE_ParCSRPCGSolve(solver, A->getParallel(), b->getParallel(), x->getParallel());
+    return solve_err;
   }
 
 
