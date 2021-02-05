@@ -21,7 +21,7 @@
 #include <memory>
 
 namespace bout {
-#if 1   //HYPRE with Cuda enabled : todo use appropriate flag
+#if 0   //HYPRE with Cuda enabled : todo use appropriate flag
 #define HypreMalloc(P, SIZE)  cudaMallocManaged(P, SIZE)
 #define HypreFree(P)  cudaFree(P)
 #else

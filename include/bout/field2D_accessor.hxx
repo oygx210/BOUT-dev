@@ -56,10 +56,10 @@ struct Field2DAccessor {
 	}
   }
 
-    BoutReal& __host__ __device__ operator[](const Ind2D &d) {
+    BoutReal& operator[](const Ind2D &d) {
     return data[d.ind];
   }
-  const BoutReal& __host__ __device__ operator[](const Ind2D &d) const {
+  const BoutReal& operator[](const Ind2D &d) const {
     return data[d.ind];
   }
   

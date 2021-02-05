@@ -24,7 +24,7 @@
 const int CUDA_BLOCK_SIZE = 256;  // TODO: Make configurable
 using EXEC_POL = RAJA::cuda_exec<CUDA_BLOCK_SIZE>;
 #else   // BOUT_ENABLE_CUDA not defined
-using EXEC_POL = RAJA::loop_exec;
+//using EXEC_POL = RAJA::loop_exec;
 #endif  // defined(BOUT_ENABLE_CUDA)
 ////-----------CUDA settings------------------------------------------------------end
 
