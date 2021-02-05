@@ -705,6 +705,8 @@ public:
     HYPRE_PCGSetTol(solver, 1e-7);
     HYPRE_PCGSetAbsoluteTol(solver, 0.0);
     HYPRE_PCGSetMaxIter(solver, 200);
+    HYPRE_BoomerAMGSetPrintLevel(solver, 3);
+    HYPRE_ParCSRPCGSetPrintLevel(solver, 3);
 
     HYPRE_BoomerAMGCreate(&precon);
     HYPRE_BoomerAMGSetOldDefault(precon);
