@@ -165,9 +165,10 @@ INSTANTIATE_TEST_SUITE_P(LaplaceHypre3d, LaplaceHypre3dTest,
 TEST_P(LaplaceHypre3dTest, TestMatrixConstruction3D){
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -177,10 +178,11 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefA_2D){
   solver.setCoefA(coef2);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.a = coef2;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -190,10 +192,11 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefA_3D){
   solver.setCoefA(coef3);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.a = coef3;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -203,11 +206,12 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefC_2D){
   solver.setCoefC(coef2);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.c1 = coef2;
   forward.c2 = coef2;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -217,11 +221,12 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefC_3D){
   solver.setCoefC(coef3);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.c1 = coef3;
   forward.c2 = coef3;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -231,10 +236,11 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefC1_2D){
   solver.setCoefC1(coef2);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.c1 = coef2;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -244,10 +250,11 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefC1_3D){
   solver.setCoefC1(coef3);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.c1 = coef3;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -257,10 +264,11 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefC2_2D){
   solver.setCoefC2(coef2);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.c2 = coef2;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -270,10 +278,11 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefC2_3D){
   solver.setCoefC2(coef3);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.c2 = coef3;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -283,10 +292,11 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefD_2D){
   solver.setCoefD(coef2);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.d = coef2;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -296,10 +306,11 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefD_3D){
   solver.setCoefD(coef3);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.d = coef3;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -309,10 +320,11 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefEx_2D){
   solver.setCoefEx(coef2);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.ex = coef2;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -322,10 +334,11 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefEx_3D){
   solver.setCoefEx(coef3);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.ex = coef3;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -335,10 +348,11 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefEz_2D){
   solver.setCoefEz(coef2);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.ez = coef2;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
@@ -348,10 +362,11 @@ TEST_P(LaplaceHypre3dTest, TestSetCoefEz_3D){
   solver.setCoefEz(coef3);
   bout::HypreMatrix<Field3D> &matrix = solver.getMatrix3D();
   bout::HypreVector<Field3D> vector(f3, solver.getIndexer());
+  bout::HypreVector<Field3D> result(0.0, solver.getIndexer());
   forward.ez = coef3;
   Field3D expected = forward(f3);
-  matrix.computeAx(vector);
-  Field3D actual = vector.toField();
+  matrix.computeAx(vector, result);
+  Field3D actual = result.toField();
   BOUT_FOR(i, mesh->getRegion3D("RGN_ALL")) {
     EXPECT_NEAR(expected[i], actual[i], tol);
   }
