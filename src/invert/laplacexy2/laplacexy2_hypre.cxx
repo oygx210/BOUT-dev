@@ -15,6 +15,7 @@
 
 #include <cmath>
 
+#if BOUT_USE_CUDA
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
 inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=true)
 {
@@ -24,6 +25,7 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=t
       if (abort) exit(code);
    }
 }
+#endif
 
 Ind2D index2d(Mesh* mesh, int x, int y) {
   int ny = mesh->LocalNy;
