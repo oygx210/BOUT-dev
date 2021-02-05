@@ -666,9 +666,8 @@ public:
   }
 
   //y = A*x
-  void computeAx(HypreVector<T> &x)
+  void computeAx(HypreVector<T> &x, HypreVector<T> &y)
   {
-    HypreVector<T> y(0.0, index_converter);
     HYPRE_ParCSRMatrixMatvec(1.0, parallel_matrix, x.getParallel(), 0.0, y.getParallel());
   }
 
