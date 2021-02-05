@@ -724,7 +724,7 @@ public:
   }
 
   ~HypreSystem() {
-    HYPRE_Finalize();
+    //HYPRE_Finalize();
   }
 
   void setRelTol(double tol)
